@@ -1,1 +1,1 @@
-# ws_events_app
+# WS Events
