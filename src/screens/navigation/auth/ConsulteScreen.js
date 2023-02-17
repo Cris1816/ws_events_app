@@ -30,7 +30,7 @@ const ConsulteScreen = ({ navigation }) =>
     React.useEffect(() => 
     {
         startLoading();
-        setTimeout(() => stopLoading(), 4000);
+        setTimeout(() => stopLoading(), 3000);
     }, [])
     
     const getData = async () =>
@@ -76,9 +76,9 @@ const ConsulteScreen = ({ navigation }) =>
 
     React.useEffect(() =>
     {
-        if(!token['_z'] != null && validateTokenExp(token['_z']))
+        if(token['_z'] == null)
             if(interval != null)
-                clearInterval(interval)    
+                clearInterval(interval) 
     });
 
     const IconNoData = () => 

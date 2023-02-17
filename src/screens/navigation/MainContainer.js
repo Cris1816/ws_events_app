@@ -14,6 +14,18 @@ import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 const { Navigator, Screen } = createBottomTabNavigator();
+const validateTokenExp = token => (!(jwtDecode(token).exp < Date.now() / 1000)) ? true : false;
+const clearAsyncStorage = async () =>
+{
+	try 
+	{
+		await AsyncStorage.clear();	
+	} 
+	catch (error) 
+	{
+		console.error(error);
+	}
+}
 const getTokenJWT = async () => 
 {
 	const result = await AsyncStorage.getItem('access_token');
@@ -71,18 +83,12 @@ const MainContainer = ({ navigation }) =>
 	const [loading, setLoading] = useState(false);
     const startLoading = () => setLoading(true);
     const stopLoading = () => setLoading(false);
+	let value;
 
-	const clearAsyncStorage = async () =>
+	useEffect(() => 
 	{
-		try 
-		{
-			await AsyncStorage.clear();	
-		} 
-		catch (error) 
-		{
-			console.error(error);
-		}
-	}
+		value = token['_z'] != null && validateTokenExp(token['_z']);
+	}, []);
 
 	const logout = async () =>
     {
@@ -95,7 +101,7 @@ const MainContainer = ({ navigation }) =>
 			ToastUI('success', '¡Éxito!', responseJSON['result']);
 			stopLoading();
 			clearAsyncStorage();
-			navigation.replace('Login')
+			navigation.replace('Login');
 		}
 		else if(response.status == 500 && 'error' in responseJSON) 
 		{
@@ -109,7 +115,7 @@ const MainContainer = ({ navigation }) =>
 		}
     }
 
-    useEffect(() => 
+	useEffect(() => 
     {
         const backAction = () => 
         {
@@ -134,13 +140,13 @@ const MainContainer = ({ navigation }) =>
         return () => backHandler.remove();
     }, []);
 
-	const validateTokenExp = token => 
+	useEffect(() => 
 	{
-		return (!(jwtDecode(token).exp < Date.now() / 1000)) ? true : false;
-	}
+		if (!value)
+			navigation.replace('Login');
+	}, []);
 
-	return (token['_z'] != null && validateTokenExp(token['_z'])) ? 
-	(
+	return (
 		<NavigationContainer independent={true}>
 			<Spinner
 				visible={loading}
@@ -153,7 +159,6 @@ const MainContainer = ({ navigation }) =>
 			<TabNavigator/>
 		</NavigationContainer>
 	)
-	: navigation.replace('Login');
 }
 
 const styles = StyleSheet.create

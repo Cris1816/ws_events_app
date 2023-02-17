@@ -53,7 +53,7 @@ const generateDescriptionText = ({ style }, item) =>
 	const { color, fontSize, marginHorizontal } = style[0];
     const { textAlign } = style[1];
 	return (
-        <Text style={{ color: color, fontSize: fontSize / 3, fontFamily: 'Sharp_Sans', marginHorizontal: marginHorizontal, textAlign: textAlign }}>{item.description}</Text>
+        <Text style={{ color: color, fontSize: 12, fontFamily: 'Sharp_Sans', marginHorizontal: marginHorizontal, textAlign: textAlign }}>{item.description}</Text>
     )
 }
 

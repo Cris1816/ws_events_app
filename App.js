@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
-import { StatusBar, StyleSheet } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import * as eva from '@eva-design/eva';
 import { default as theme } from './assets/theme/theme.json';
 import AppLoading from 'expo-app-loading';
@@ -54,17 +54,28 @@ const App = () =>
         <>
             <IconRegistry icons={EvaIconsPack} />
             <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+                {Platform.OS === 'ios' &&
+                    <View style={{
+                        width: "100%",
+                        height: 100, // For all devices, even X, XS Max
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        backgroundColor: "#E51576"}}
+                />}
                 <SafeAreaView style={{ flex: 1 }}>
-                <StatusBar/>
+                    <StatusBar translucent  backgroundColor={'#181D36'}/>
                     <NavigationContainer style={ styles.mainContainer } independent={true}>
                         <Stack.Navigator initialRouteName={(token['_z'] != null && validateTokenExp(token['_z'])) ? 'Layout' : 'Login' } screenOptions={{ headerShown: false }}>
                         <Stack.Screen
                             name="Login"
                             component={LoginScreen}
+                            options={{ title: 'Login S' }}
                         /> 
                         <Stack.Screen
                             name="Layout"
                             component={MainContainer}
+                            options={{ title: 'Layout S' }}
                         />
                         </Stack.Navigator>
                     </NavigationContainer>

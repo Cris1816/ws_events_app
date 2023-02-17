@@ -8,5 +8,8 @@ const evaConfig =
 
 module.exports = MetroConfig.create(evaConfig, 
 {
-
+    transformer: 
+    {
+        assetPlugins: ['expo-asset/tools/hashAssetFiles'],
+    }, 
 });

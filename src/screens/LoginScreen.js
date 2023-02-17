@@ -12,6 +12,10 @@ import { loginUser } from '../api/Auth';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image } from 'react-native';
+import { Platform } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native';
 const clearAsyncStorage = async () => 
 {
 	try 
@@ -38,11 +42,6 @@ const LoginScreen = ({ navigation }) =>
         password: ''  
     });
 
-	// useEffect(() => 
-	// {
-	//   stopLoading();
-	// }, [])
-
     const login = async () =>
     {
 		const data = 
@@ -66,7 +65,7 @@ const LoginScreen = ({ navigation }) =>
 				stopLoading();
 				ToastUI('success', '¡Éxito!', responseJSON['result']);
 				navigation.replace('Layout');
-			}).catch(error => console.log(error));
+			}).catch(error => console.error(error));
 		}
 		else if(response.status == 500 || response.status == 401 && 'error' in responseJSON) 
 		{
@@ -82,29 +81,37 @@ const LoginScreen = ({ navigation }) =>
     }
 
     return (
-        <View style={styles.mainContainer}>
-            <StatusBar style="auto" />
-			<Spinner
-				visible={loading}
-				textContent={'Iniciando sesión...'}
-				textStyle={styles.spinner}
-				color='#E51576'
-				animation='fade'
-				overlayColor='#181D36'
-			/>
-            <View style={ styles.background }>
-                <Background width={width} height={height}/>
-            </View>
-            <View style={styles.container}>
-                <Text style={styles.title} category='c1'>Login</Text>
-                <Text style={styles.subtitle} category='s1'>Inicia sesión con tu cuenta</Text>
-                <InputUI icon={IconUser} placeholder='Usuario' onChangeText={ value => onChange(value, 'username') } value={username}></InputUI>
-                <InputUI icon={IconPassword} placeholder='Contraseña' secureText={true} onChangeText={ value => onChange(value, 'password') } value={password}></InputUI>
-                <View style={ styles.buttonContainer }>
-                  <ButtonUI icon={IconEnter} status='success' text='INICIAR' onPress={async () => await login()}></ButtonUI>
-                </View>
-            </View>
-        </View>
+		<KeyboardAvoidingView
+			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+			style={{ flex:1 }}>
+			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+				<View style={styles.mainContainer}>
+					<StatusBar style="auto" />
+					<Spinner
+						visible={loading}
+						textContent={'Iniciando sesión...'}
+						textStyle={styles.spinner}
+						color='#E51576'
+						animation='fade'
+						overlayColor='#181D36'
+					/>
+					<View style={styles.container}>
+						<Image
+							style={{ width: 300, height: 300 }}
+							source={ require('../../assets/img/login.png') }
+							resizeMode='contain'
+						/>
+						<Text style={styles.title}>Login</Text>
+						<Text style={styles.subtitle}>Inicia sesión con tu cuenta</Text>
+						<InputUI icon={IconUser} placeholder='Usuario' secureText={false} onChangeText={ value => onChange(value, 'username') } value={username}></InputUI>
+						<InputUI icon={IconPassword} placeholder='Contraseña' secureText={true} onChangeText={ value => onChange(value, 'password') } value={password}></InputUI>
+						<View style={ styles.buttonContainer }>
+							<ButtonUI icon={IconEnter} status='success' text='INICIAR' onPress={async () => await login()}></ButtonUI>
+						</View>
+					</View>
+				</View>
+			</TouchableWithoutFeedback>
+		</KeyboardAvoidingView>
     )
 }
 
@@ -113,36 +120,37 @@ const styles = StyleSheet.create
 	mainContainer:
 	{
 		flex: 1,
-		justifyContent: 'flex-end',
-		backgroundColor: '#181D36'
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#181D36',
 	},
 	container: 
 	{
+		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		bottom: 10,
-		marginHorizontal: 30
-	},
-	background:
-	{
-		position: 'relative',
-		top: 240
+		marginHorizontal: 30, 
 	},
 	title: 
 	{ 
-		alignSelf: 'flex-end',
+		alignSelf: 'flex-start',
+		fontWeight: '600',
+		fontFamily: 'Sharp_Sans_Bold', 
+		fontSize: 36
 	},
 	subtitle:
 	{
 		fontSize: 20,
 		paddingVertical: 10,
 		paddingBottom: 12,
-		alignSelf: 'flex-end'
+		alignSelf: 'flex-start',
+		fontWeight: '600',
+		fontFamily: 'Sharp_Sans_SemiBold',
 	},
 	buttonContainer:
 	{
 		marginVertical: 10,
-		width: '33%'
+		// width: '33%'
 	}, 
 	spinner: 
 	{ 

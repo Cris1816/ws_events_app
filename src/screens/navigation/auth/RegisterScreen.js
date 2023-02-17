@@ -9,8 +9,6 @@ import { useForm } from '../../../../hooks/useForms';
 import ToastUI from '../../../components/ToastUI';
 import { createRegistration } from '../../../api/Registrations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CommonActions } from '@react-navigation/native';
-import { useEffect } from 'react';
 const getTokenJWT = async () => 
 {
     const result = await AsyncStorage.getItem('access_token');
@@ -87,11 +85,11 @@ const RegisterScreen = ({ navigation }) =>
                 <View style={ styles.scrollContainer }>
                     <Text category='c1'>Registro</Text>
                     <Text category='s1' style={styles.text}>Completa la siguiente información para realizar un nuevo registro</Text>
-                    <InputUI label='Nombre' onChangeText={ value => onChange(value, 'name') } value={name}></InputUI>
-                    <InputUI label='Teléfono' type='phone-pad' onChangeText={ value => onChange(value, 'phone_number') } value={phone_number}></InputUI>
-                    <InputUI label='Correo' type='email-address' onChangeText={ value => onChange(value, 'email') } value={email}></InputUI>
-                    <InputUI label='Motivo / Comentarios' onChangeText={ value => onChange(value, 'comments') } value={comments}></InputUI>
-                    <InputUI label='Empresa' onChangeText={ value => onChange(value, 'company') } value={company}></InputUI>
+                    <InputUI secureText={false} label='Nombre' onChangeText={ value => onChange(value, 'name') } value={name}></InputUI>
+                    <InputUI secureText={false} label='Teléfono' type='phone-pad' onChangeText={ value => onChange(value, 'phone_number') } value={phone_number}></InputUI>
+                    <InputUI secureText={false} label='Correo' type='email-address' onChangeText={ value => onChange(value, 'email') } value={email}></InputUI>
+                    <InputUI secureText={false} label='Motivo / Comentarios' onChangeText={ value => onChange(value, 'comments') } value={comments}></InputUI>
+                    <InputUI secureText={false} label='Empresa' onChangeText={ value => onChange(value, 'company') } value={company}></InputUI>
                     <View style={ styles.buttonContainer }>
                         <ButtonUI status='success' text='REGISTRAR' onPress={async () => await register()}></ButtonUI>
                     </View>

@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         width: '100%',
         marginVertical: 10,
         borderRadius: 25,
+        fontFamily: 'Sharp_Sans_SemiBold',
     },
     label:
     {
