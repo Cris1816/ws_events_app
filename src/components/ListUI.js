@@ -34,6 +34,7 @@ export const ListUI = (props) =>
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
             overScrollMode='never'
+            refreshControl={props.refreshControl}
         />
     ) 
 };

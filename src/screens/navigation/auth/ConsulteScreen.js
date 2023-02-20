@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToastUI from '../../../components/ToastUI';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import jwtDecode from 'jwt-decode';
+import { RefreshControl } from 'react-native-gesture-handler';
 let interval;
 const getTokenJWT = async () => 
 {
@@ -24,11 +25,15 @@ const ConsulteScreen = ({ navigation }) =>
 {
     const [state, setState] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+    const [refreshing, setRefreshing] = React.useState(false);
     const startLoading = () => setLoading(true);
     const stopLoading = () => setLoading(false);
+    const onRefresh = () => setRefreshing(true);
+    const onRefreshDone = () => setRefreshing(false);
 
     React.useEffect(() => 
     {
+        getData();
         startLoading();
         setTimeout(() => stopLoading(), 3000);
     }, [])
@@ -36,6 +41,7 @@ const ConsulteScreen = ({ navigation }) =>
     const getData = async () =>
     { 
         let data = [];
+        // onRefresh();
         const response = await getRegistrations(token['_z']);
         const responseJSON = await response.json();
         
@@ -62,24 +68,28 @@ const ConsulteScreen = ({ navigation }) =>
             console.log('No está autorizado para ver esta información');
             setState(data);
         }
+        else if(response.status == 429)
+        {
+            console.log('Error de servidor');
+        }
         else
         {
             ToastUI('error', '¡Error!', 'Hubo un error inesperado, revisa tu conexión a internet');
         }
     }
 
-    React.useEffect(() => 
-    { 
-        getData(); 
-        interval = setInterval(() => getData(), 4000) 
-    }, [])
+    // React.useEffect(() => 
+    // { 
+    //     getData(); 
+    //     interval = setInterval(() => getData(), 8000) 
+    // }, [])
 
-    React.useEffect(() =>
-    {
-        if(token['_z'] == null)
-            if(interval != null)
-                clearInterval(interval) 
-    });
+    // React.useEffect(() =>
+    // {
+    //     if(token['_z'] == null)
+    //         if(interval != null)
+    //             clearInterval(interval) 
+    // });
 
     const IconNoData = () => 
     {
@@ -102,7 +112,7 @@ const ConsulteScreen = ({ navigation }) =>
 				overlayColor='#181D36'
 			/>
             <View style={ styles.scrollContainer }>
-                <Text category='c1'>Consulta</Text>
+                <Text style={styles.title}>Consulta</Text>
                 <Text category='s1' style={styles.text}>Listado de los registros realizados</Text>
                 { 
                     (!state.length > 0) ? 
@@ -113,7 +123,7 @@ const ConsulteScreen = ({ navigation }) =>
                         </View>
                     ) 
                     : 
-                    ( <ListUI data={state} marginBottom={ 150 }/> )
+                    ( <ListUI data={state} marginBottom={ 150 } refreshControl={ <RefreshControl tintColor={'white'} refreshing={refreshing} onRefresh={getData} />} /> )
                 }
             </View>
         </Layout>
@@ -130,10 +140,19 @@ const styles = StyleSheet.create
     {
         padding: 30,
     },
+	title: 
+	{ 
+		alignSelf: 'flex-start',
+		fontWeight: '600',
+		fontFamily: 'Sharp_Sans_Bold', 
+		fontSize: 36
+	},
     text:
     {
         paddingVertical: 5,
         fontSize: 16,
+        fontWeight: '600',
+		fontFamily: 'Sharp_Sans_SemiBold', 
     },
     buttonContainer:
     {

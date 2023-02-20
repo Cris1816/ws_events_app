@@ -104,7 +104,7 @@ const LoginScreen = ({ navigation }) =>
 						<Text style={styles.title}>Login</Text>
 						<Text style={styles.subtitle}>Inicia sesión con tu cuenta</Text>
 						<InputUI icon={IconUser} placeholder='Usuario' secureText={false} onChangeText={ value => onChange(value, 'username') } value={username}></InputUI>
-						<InputUI icon={IconPassword} placeholder='Contraseña' secureText={true} onChangeText={ value => onChange(value, 'password') } value={password}></InputUI>
+						<InputUI icon={IconPassword} onSubmitEditing={async () => await login()} placeholder='Contraseña' secureText={true} onChangeText={ value => onChange(value, 'password') } value={password}></InputUI>
 						<View style={ styles.buttonContainer }>
 							<ButtonUI icon={IconEnter} status='success' text='INICIAR' onPress={async () => await login()}></ButtonUI>
 						</View>

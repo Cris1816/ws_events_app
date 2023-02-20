@@ -5,7 +5,8 @@ import ConsulteScreen from './auth/ConsulteScreen';
 import RegisterScreen from './auth/RegisterScreen';
 import { StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react';
-import { AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { Text } from '@ui-kitten/components';
 import { BackHandler } from 'react-native';
 import { Alert } from 'react-native';
 import { logoutUser } from '../../api/Auth';
@@ -13,6 +14,8 @@ import ToastUI from '../../components/ToastUI';
 import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const { Navigator, Screen } = createBottomTabNavigator();
 const validateTokenExp = token => (!(jwtDecode(token).exp < Date.now() / 1000)) ? true : false;
 const clearAsyncStorage = async () =>
@@ -112,30 +115,30 @@ const MainContainer = ({ navigation }) =>
 		{
 			stopLoading();
 			ToastUI('error', '¡Error!', 'Hubo un error inesperado, revisa tu conexión a internet');
-		}
+		} 
     }
+
+	const backAction = () => 
+	{
+		Alert.alert('Espera un momento', '¿Seguro que quieres salir?', 
+		[
+			{
+				text: 'No',
+				onPress: () => null,
+				style: 'cancel',
+			},
+			{
+				text: 'Si', onPress: async () => 
+				{ 
+					await logout(); 
+				}
+			},
+		]);
+		return true;
+	};
 
 	useEffect(() => 
     {
-        const backAction = () => 
-        {
-            Alert.alert('Espera un momento', '¿Seguro que quieres salir?', 
-            [
-                {
-                    text: 'No, cancelar',
-                    onPress: () => null,
-                    style: 'cancel',
-                },
-                {
-                    text: 'Si', onPress: async () => 
-					{ 
-						await logout(); 
-					}
-                },
-            ]);
-            return true;
-        };
-
         const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
         return () => backHandler.remove();
     }, []);
@@ -156,6 +159,17 @@ const MainContainer = ({ navigation }) =>
 				animation='fade'
 				overlayColor='#181D36'
 			/>
+			{
+				Platform.OS === 'ios' &&
+                    <TouchableOpacity activeOpacity={0.95} onPress={backAction}>
+						<View style={ styles.closeSession }>
+							<Text style={{ fontWeight: '600', fontFamily: 'Sharp_Sans_SemiBold' }}>
+								Cerrar Sesión&nbsp;&nbsp;
+								<MaterialIcons name="logout" size={ 14 } color={'white'} />
+							</Text>
+						</View>
+					</TouchableOpacity>
+			}
 			<TabNavigator/>
 		</NavigationContainer>
 	)
@@ -176,6 +190,14 @@ const styles = StyleSheet.create
 		color: 'white', 
 		fontWeight: '600',
 		fontFamily: 'Sharp_Sans_SemiBold',  
+	},
+	closeSession: 
+	{ 
+		position: 'relative', 
+		zIndex: 1,
+		alignItems: 'center',
+		paddingVertical: 18,
+		backgroundColor: '#181D36'
 	}
 });
 

@@ -13,12 +13,13 @@ const InputUI = (props) =>
             placeholder = { props.placeholder }
             size = 'large'
             style = {styles.textInput}
-            secureTextEntry = {(props.secureText) ? secureTextEntry : null}
+            secureTextEntry = { (props.secureText != null) ?  props.secureText : false}
             accessoryLeft = {(props.icon != null) ? props.icon : null}
             keyboardType = { (props.type != null) ? props.type : 'default'}
             value={props.value}
             onChangeText={ props.onChangeText}
-            ref={ input => { props.ref = input } } 
+            ref = { input => { props.ref = input } }
+            onSubmitEditing = {(props.onSubmitEditing != null) ? props.onSubmitEditing : null}
             />
     )
 }

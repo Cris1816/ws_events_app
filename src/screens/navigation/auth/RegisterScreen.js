@@ -83,13 +83,13 @@ const RegisterScreen = ({ navigation }) =>
 			/>
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} overScrollMode='never'>
                 <View style={ styles.scrollContainer }>
-                    <Text category='c1'>Registro</Text>
+                    <Text style={styles.title}>Registro</Text>
                     <Text category='s1' style={styles.text}>Completa la siguiente información para realizar un nuevo registro</Text>
                     <InputUI secureText={false} label='Nombre' onChangeText={ value => onChange(value, 'name') } value={name}></InputUI>
                     <InputUI secureText={false} label='Teléfono' type='phone-pad' onChangeText={ value => onChange(value, 'phone_number') } value={phone_number}></InputUI>
                     <InputUI secureText={false} label='Correo' type='email-address' onChangeText={ value => onChange(value, 'email') } value={email}></InputUI>
                     <InputUI secureText={false} label='Motivo / Comentarios' onChangeText={ value => onChange(value, 'comments') } value={comments}></InputUI>
-                    <InputUI secureText={false} label='Empresa' onChangeText={ value => onChange(value, 'company') } value={company}></InputUI>
+                    <InputUI secureText={false} label='Empresa' onChangeText={ value => onChange(value, 'company') } value={company} onSubmitEditing={async () => await register()}></InputUI>
                     <View style={ styles.buttonContainer }>
                         <ButtonUI status='success' text='REGISTRAR' onPress={async () => await register()}></ButtonUI>
                     </View>
@@ -109,10 +109,19 @@ const styles = StyleSheet.create
     {
         padding: 30,
     },
+	title: 
+	{ 
+		alignSelf: 'flex-start',
+		fontWeight: '600',
+		fontFamily: 'Sharp_Sans_Bold', 
+		fontSize: 36
+	},
     text:
     {
         paddingVertical: 5,
         fontSize: 16,
+        fontWeight: '600',
+		fontFamily: 'Sharp_Sans_SemiBold', 
     },
     buttonContainer:
     {

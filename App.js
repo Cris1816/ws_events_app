@@ -57,14 +57,14 @@ const App = () =>
                 {Platform.OS === 'ios' &&
                     <View style={{
                         width: "100%",
-                        height: 100, // For all devices, even X, XS Max
+                        height: 100,
                         position: 'absolute',
                         top: 0,
                         left: 0,
                         backgroundColor: "#E51576"}}
                 />}
                 <SafeAreaView style={{ flex: 1 }}>
-                    <StatusBar translucent  backgroundColor={'#181D36'}/>
+                    <StatusBar translucent backgroundColor={'#181D36'} />
                     <NavigationContainer style={ styles.mainContainer } independent={true}>
                         <Stack.Navigator initialRouteName={(token['_z'] != null && validateTokenExp(token['_z'])) ? 'Layout' : 'Login' } screenOptions={{ headerShown: false }}>
                         <Stack.Screen
