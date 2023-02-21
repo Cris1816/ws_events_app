@@ -18,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.satech.wsevents"
     },
     "android": {
       "package": "com.satech.wsevents",
