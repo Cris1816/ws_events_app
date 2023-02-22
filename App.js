@@ -28,11 +28,7 @@ const Stack = createStackNavigator();
 const App = () => 
 {
     const [isReady, setIsReady] = useState(false);    
-
-    const loadFonts = async () => 
-    {
-        await useFonts();
-    };
+    const loadFonts = async () => await useFonts();
 
     if (!isReady) 
     {

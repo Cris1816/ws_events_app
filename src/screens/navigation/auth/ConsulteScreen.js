@@ -28,9 +28,7 @@ const ConsulteScreen = ({ navigation }) =>
     const [refreshing, setRefreshing] = React.useState(false);
     const startLoading = () => setLoading(true);
     const stopLoading = () => setLoading(false);
-    const onRefresh = () => setRefreshing(true);
-    const onRefreshDone = () => setRefreshing(false);
-
+   
     React.useEffect(() => 
     {
         getData();
@@ -41,11 +39,12 @@ const ConsulteScreen = ({ navigation }) =>
     const getData = async () =>
     { 
         let data = [];
-        // onRefresh();
         const response = await getRegistrations(token['_z']);
         const responseJSON = await response.json();
+
+        console.log(token['_z']);
         
-        if (response.status == 200)
+        if (response.status == 200 && responseJSON.length > 0)
         {
             responseJSON.forEach(element => 
             {
@@ -77,19 +76,6 @@ const ConsulteScreen = ({ navigation }) =>
             ToastUI('error', '¡Error!', 'Hubo un error inesperado, revisa tu conexión a internet');
         }
     }
-
-    // React.useEffect(() => 
-    // { 
-    //     getData(); 
-    //     interval = setInterval(() => getData(), 8000) 
-    // }, [])
-
-    // React.useEffect(() =>
-    // {
-    //     if(token['_z'] == null)
-    //         if(interval != null)
-    //             clearInterval(interval) 
-    // });
 
     const IconNoData = () => 
     {

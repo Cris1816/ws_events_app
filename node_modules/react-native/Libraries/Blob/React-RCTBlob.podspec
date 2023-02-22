@@ -45,4 +45,5 @@ Pod::Spec.new do |s|
   s.dependency "React-Core/RCTBlobHeaders", version
   s.dependency "React-Core/RCTWebSocket", version
   s.dependency "React-RCTNetwork", version
+  s.dependency "React-jsi", version
 end

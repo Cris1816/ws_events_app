@@ -16,30 +16,18 @@ import { Image } from 'react-native';
 import { Platform } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
-const clearAsyncStorage = async () => 
-{
-	try 
-	{
-		await AsyncStorage.clear()
-	} 
-	catch(e) 
-	{
-		console.error(e);
-	}
-}
-clearAsyncStorage();
 
 const LoginScreen = ({ navigation }) => 
 {
-    const { width, height } = useWindowDimensions();
 	const [loading, setLoading] = useState(false);
     const startLoading = () => setLoading(true);
     const stopLoading = () => setLoading(false);
+	const handleNavigation = () => navigation.replace('Layout');
 
     const { username, password, onChange } = useForm
     ({
         username: '',
-        password: ''  
+        password: '' 
     });
 
     const login = async () =>
@@ -64,7 +52,7 @@ const LoginScreen = ({ navigation }) =>
 			{
 				stopLoading();
 				ToastUI('success', '¡Éxito!', responseJSON['result']);
-				navigation.replace('Layout');
+				handleNavigation();
 			}).catch(error => console.error(error));
 		}
 		else if(response.status == 500 || response.status == 401 && 'error' in responseJSON) 

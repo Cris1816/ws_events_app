@@ -1,9 +1,9 @@
 {
-  "expoServerPort": null,
+  "expoServerPort": 19000,
   "packagerPort": 19000,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://gp-iew.dev02-satech.registromotofiesta.exp.direct",
+  "packagerNgrokUrl": "https://gp-iew.dev02-satech.registromotofiesta.exp.direct",
+  "ngrokPid": 13096,
   "webpackServerPort": null
 }
